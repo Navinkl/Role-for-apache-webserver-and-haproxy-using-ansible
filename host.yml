@@ -1,0 +1,8 @@
+- name: "Webserver"
+  hosts: webserver
+  roles:
+          - role: "webserver"
+- name: "Haproxy"
+  hosts: lb
+  roles:
+          - role: "haproxy"
