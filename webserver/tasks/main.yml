@@ -1,0 +1,48 @@
+---
+# tasks file for webserver
+          
+  
+          - name: "Create a directory"
+            file:
+                  state: directory
+                  path: "/dvd1"
+          - name: "Mount the iso file to directory created"
+            mount:
+                  src: "/dev/cdrom"
+                  path: "/dvd1"
+                  state: mounted
+                  fstype: iso9660
+          - name: "Yum config for Appstream"
+            yum_repository:
+                  baseurl: "/dvd1/AppStream"
+                  name: "mydvd"
+                  description: "my yum dvd for AppStream"
+                  gpgcheck: no
+          - name: "yum config for BaseOS"
+            yum_repository:
+                  baseurl: "/dvd1/BaseOS"
+                  name: "mydvd2"
+                  description: "my yum dvd2 for baseOS"
+                  gpgcheck: no
+          - name: "Install Apache Webserver"
+            package:
+                  name: "httpd"
+                  state: present
+
+
+          - name: "Copy Webpage"
+            copy:
+                  dest: "/var/www/html/index.html"
+                  content: "Testing !!"
+
+          - name: "Add http firewall Rule"
+            firewalld:
+                  port: "{{ backend_port }}/tcp"
+                  state: enabled
+                  permanent: yes
+                  immediate: yes
+          - name: "Start the Service"
+            service:
+                  name: "httpd"
+                  state: started
+

@@ -1,0 +1,6 @@
+---
+# vars file for webserver
+ backend_port: "8080"
+ frontend_main_port: "80"
+
+
